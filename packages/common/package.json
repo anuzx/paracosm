@@ -1,16 +1,15 @@
 {
-  "name": "ws",
+  "name": "common",
   "module": "index.ts",
   "type": "module",
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest",
-    "@types/ws": "^8.18.1"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "ws": "^8.21.3"
+    "zod": "^4.4.3"
   }
 }
