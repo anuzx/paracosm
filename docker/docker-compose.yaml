@@ -1,0 +1,12 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: paracosm
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: paracosm
+    ports:
+      - "5432:5432"
+
