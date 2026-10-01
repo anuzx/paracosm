@@ -6,9 +6,10 @@ import adminRouter from "./admin.route";
 import spaceRouter from "./space.route";
 import userRouter from "./user.route";
 import bcrypt from "bcrypt";
-import { db, users } from "@repo/db";
+import { avatars, db, elements, users } from "@repo/db";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
+import { authMiddleware } from "../../middlewares/auth.middleware";
 
 const authRouter = new Elysia({ prefix: "/auth" })
   .post("/signup", async ({ body, set }) => {
@@ -87,8 +88,26 @@ const authRouter = new Elysia({ prefix: "/auth" })
     return ApiResponse({ token });
   });
 
+const avatarRouter = new Elysia()
+  .use(authMiddleware)
+  .get("/avatars", async () => {
+    const [avatar] = await db.select().from(avatars);
+
+    return ApiResponse({ avatars: avatar });
+  });
+
+const elementRouter = new Elysia()
+  .use(authMiddleware)
+  .get("/elements", async () => {
+    const element = await db.select().from(elements);
+
+    return ApiResponse({ element });
+  });
+
 export const router = new Elysia({ prefix: "/api/v1" })
   .use(authRouter)
+  .use(avatarRouter)
+  .use(elementRouter)
   .use(new Elysia({ prefix: "/user" }).use(userRouter))
   .use(new Elysia({ prefix: "/space" }).use(spaceRouter))
   .use(new Elysia({ prefix: "/admin" }).use(adminRouter));

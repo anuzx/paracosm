@@ -1,4 +1,4 @@
-import { integer, pgEnum, pgTable, text } from "drizzle-orm/pg-core";
+import { boolean, integer, pgEnum, pgTable, text } from "drizzle-orm/pg-core";
 import { createId } from "@paralleldrive/cuid2";
 
 export const roleEnum = pgEnum("Role", ["admin", "user"]);
@@ -26,9 +26,11 @@ export const spaces = pgTable("Space", {
 
   width: integer("width").notNull(),
 
-  height: integer("height"),
+  height: integer("height").notNull(),
 
   thumbnail: text("thumbnail"),
+
+  creatorId: text("creatorId").references(() => users.id),
 });
 
 export const elements = pgTable("Element", {
@@ -39,6 +41,8 @@ export const elements = pgTable("Element", {
   width: integer("width").notNull(),
 
   height: integer("height").notNull(),
+
+  static: boolean("static").notNull(),
 
   imageUrl: text("imageUrl").notNull(),
 });
@@ -71,6 +75,8 @@ export const maps = pgTable("Map", {
   height: integer("height").notNull(),
 
   name: text("name").notNull(),
+
+  thumbnail: text("thumbnail").notNull()
 });
 
 export const mapElements = pgTable("mapElements", {
